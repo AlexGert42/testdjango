@@ -1,14 +1,54 @@
 from django.http import HttpResponse, HttpResponseNotFound, Http404
 from django.shortcuts import render, redirect
 
-
 # Create your views here.
+from base.models import Human
+
+
+
+menu = [
+    {'title': 'Base', 'url': 'home'},
+    {'title': 'About', 'url': 'about'},
+    {'title': 'Contacts', 'url': 'contacts'},
+    {'title': 'Login', 'url': 'login'},
+]
 
 
 def index(request):
-    return HttpResponse('Base Page')
+    post_date = Human.objects.all()
+    context = {
+        'posts': post_date,
+        'title': 'Base Page',
+        'menu': menu
+    }
+    return render(request, 'base/index.html', context=context)
 
 
+def about(request):
+    context = {
+        'title': 'About',
+        'menu': menu
+    }
+    return render(request, 'base/about.html', context=context)
+
+
+def addpage(request):
+    return render(request, 'base/addpage.html')
+
+
+def contacts(request):
+    return render(request, 'base/contacts.html')
+
+
+def login(request):
+    return render(request, 'base/login.html')
+
+
+def show_post(request, post_id):
+    return HttpResponse(f"Page Post {post_id}")
+
+
+######################################################
 def categories(request):
     if (request.GET):
         print('Request', request.GET)
